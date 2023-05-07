@@ -23,3 +23,7 @@ As a user, I would like to be able to specify the number of events I want to vie
 As a user, I would like to be able to use the app when offline so that I can see the events I viewed the last time I was online.
 As a user, I would like to be able to add the app shortcut to my home screen so that I can open the app faster.
 As a user, I would like to be able to see a chart showing the upcoming events in each city so that I know what events are organized in which city.
+
+
+Tecnical Requirements
+Javascript, React, Node.js, AWS
