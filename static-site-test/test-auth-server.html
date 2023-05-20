@@ -83,11 +83,11 @@
 			const getAccessToken = document.getElementById("getToken");
 			const accessTokenElement = document.getElementById("accessToken");
 			const getToken =
-				"https://2cz71rx2zb.execute-api.us-east-1.amazonaws.com/dev/api/token/";
+				"https://2cz71rx2zb.execute-api.us-east-1.amazonaws.com/dev/api/token";
 
 			getAccessToken.onclick = function () {
 				let code = codeValue.value;
-				const getTokenRequest = getToken + code;
+				const getTokenRequest = getToken + "/" + code;
 				fetch(getTokenRequest)
 					.then(function (response) {
 						if (!response.ok) {
@@ -110,11 +110,11 @@
 			const getEvents = document.getElementById("getEvents");
 			const events = document.getElementById("events");
 			const getCalendarEvents =
-				"https://2cz71rx2zb.execute-api.us-east-1.amazonaws.com/dev/api/get-events/";
+				"https://2cz71rx2zb.execute-api.us-east-1.amazonaws.com/dev/api/get-events";
 
 			getEvents.onclick = function () {
 				const { access_token } = JSON.parse(accessTokenElement.innerText);
-				const eventRequest = getCalendarEvents + access_token;
+				const eventRequest = getCalendarEvents + "/" + access_token;
 				fetch(eventRequest)
 					.then(function (response) {
 						if (!response.ok) {
