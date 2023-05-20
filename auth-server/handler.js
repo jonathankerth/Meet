@@ -16,7 +16,6 @@ const credentials = {
 	javascript_origins: [
 		"https://jonathankerth.github.io",
 		"http://localhost:3000",
-		"http://192.168.0.107:8080/",
 	],
 };
 const { client_secret, client_id, redirect_uris, calendar_id } = credentials;
