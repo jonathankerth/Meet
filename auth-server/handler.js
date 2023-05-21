@@ -13,7 +13,10 @@ const credentials = {
 	auth_uri: "https://accounts.google.com/o/oauth2/auth",
 	token_uri: "https://oauth2.googleapis.com/token",
 	auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-	redirect_uris: ["https://jonathankerth.github.io/meet"],
+	redirect_uris: [
+		"https://jonathankerth.github.io/meet",
+		"http://localhost:3000",
+	],
 	javascript_origins: [
 		"https://jonathankerth.github.io",
 		"http://localhost:3000",
@@ -23,7 +26,7 @@ const { client_secret, client_id, redirect_uris, calendar_id } = credentials;
 const oAuth2Client = new google.auth.OAuth2(
 	client_id,
 	client_secret,
-	"https://jonathankerth.github.io/meet"
+	redirect_uris[0]
 );
 
 module.exports.getAuthURL = async () => {
@@ -45,21 +48,14 @@ module.exports.getAuthURL = async () => {
 };
 
 module.exports.getAccessToken = async (event) => {
-	// The values used to instantiate the OAuthClient are at the top of the file
 	const oAuth2Client = new google.auth.OAuth2(
 		client_id,
 		client_secret,
 		redirect_uris[0]
 	);
-	// Decode authorization code extracted from the URL query
 	const code = decodeURIComponent(`${event.pathParameters.code}`);
 
 	return new Promise((resolve, reject) => {
-		/**
-		 *  Exchange authorization code for access token with a “callback” after the exchange,
-		 *  The callback in this case is an arrow function with the results as parameters: “err” and “token.”
-		 */
-
 		oAuth2Client.getToken(code, (err, token) => {
 			if (err) {
 				return reject(err);
@@ -68,7 +64,6 @@ module.exports.getAccessToken = async (event) => {
 		});
 	})
 		.then((token) => {
-			// Respond with OAuth token
 			return {
 				statusCode: 200,
 				headers: {
@@ -79,76 +74,66 @@ module.exports.getAccessToken = async (event) => {
 			};
 		})
 		.catch((err) => {
-			// Handle error
 			console.error(err);
 			return {
 				statusCode: 500,
+				headers: {
+					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Credentials": true,
+				},
 				body: JSON.stringify(err),
 			};
 		});
 };
 
 module.exports.getCalendarEvents = async (event) => {
-	try {
-		// Create a new OAuth2 client
-		const oAuth2Client = new google.auth.OAuth2(
-			client_id,
-			client_secret,
-			redirect_uris[0]
-		);
+	const oAuth2Client = new google.auth.OAuth2(
+		client_id,
+		client_secret,
+		redirect_uris[0]
+	);
+	const access_token = decodeURIComponent(
+		`${event.pathParameters.access_token}`
+	);
+	oAuth2Client.setCredentials({ access_token });
 
-		// Retrieve the access token from the event object
-		const { access_token } = JSON.parse(event.body);
-
-		// Set the access token as credentials in the OAuth2 client
-		oAuth2Client.setCredentials({ access_token });
-
-		// Wrap the asynchronous logic in a Promise
-		return new Promise((resolve, reject) => {
-			calendar.events.list(
-				{
-					calendarId: calendar_id,
-					auth: oAuth2Client,
-					timeMin: new Date().toISOString(),
-					singleEvents: true,
-					orderBy: "startTime",
-				},
-				(error, response) => {
-					if (error) {
-						reject(error);
-					} else {
-						resolve(response);
-					}
+	return new Promise((resolve, reject) => {
+		calendar.events.list(
+			{
+				calendarId: calendar_id,
+				auth: oAuth2Client,
+				timeMin: new Date().toISOString(),
+				singleEvents: true,
+				orderBy: "startTime",
+			},
+			(error, response) => {
+				if (error) {
+					reject(error);
+				} else {
+					resolve(response);
 				}
-			);
+			}
+		);
+	})
+		.then((results) => {
+			return {
+				statusCode: 200,
+				headers: {
+					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Credentials": true,
+				},
+				body: JSON.stringify({ events: results.data.items }),
+			};
 		})
-			.then((response) => {
-				// Process and manipulate the response as needed
-				const events = response.data.items;
-
-				// Return the events in the response body
-				return {
-					statusCode: 200,
-					headers: {
-						"Access-Control-Allow-Origin": "*",
-						"Access-Control-Allow-Credentials": true,
-					},
-					body: JSON.stringify({ events: events }),
-				};
-			})
-
-			.catch((error) => {
-				console.error(error);
-				return {
-					statusCode: 500,
-					body: JSON.stringify(error),
-				};
-			});
-	} catch (error) {
-		console.error(error);
-		return {
-			statusCode: 500,
-			body: JSON.stringify(error),
-		};
-	}
+		.catch((err) => {
+			console.error(err);
+			return {
+				statusCode: 500,
+				headers: {
+					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Credentials": true,
+				},
+				body: JSON.stringify(err),
+			};
+		});
 };

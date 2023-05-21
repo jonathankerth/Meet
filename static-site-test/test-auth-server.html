@@ -51,7 +51,7 @@
 			const resultLink = document.getElementById("authURL");
 			// Replace this with your own endpoint
 			const getAuthURL =
-				"https://2cz71rx2zb.execute-api.us-east-1.amazonaws.com/dev/api/get-auth-url";
+				"https://clufz3ane7goktecilgxra4sle0jcfoc.lambda-url.us-east-2.on.aws/";
 
 			getURLElement.onclick = function () {
 				fetch(getAuthURL)
@@ -83,7 +83,7 @@
 			const getAccessToken = document.getElementById("getToken");
 			const accessTokenElement = document.getElementById("accessToken");
 			const getToken =
-				"https://2cz71rx2zb.execute-api.us-east-1.amazonaws.com/dev/api/token";
+				"https://onsd46zxpzxzcnritt2qes2ytu0goqpg.lambda-url.us-east-2.on.aws/";
 
 			getAccessToken.onclick = function () {
 				let code = codeValue.value;
@@ -110,7 +110,7 @@
 			const getEvents = document.getElementById("getEvents");
 			const events = document.getElementById("events");
 			const getCalendarEvents =
-				"https://2cz71rx2zb.execute-api.us-east-1.amazonaws.com/dev/api/get-events";
+				"https://ot3f7ssoz77zg7pijmza6hjqwi0wffmr.lambda-url.us-east-2.on.aws/";
 
 			getEvents.onclick = function () {
 				if (accessTokenElement.innerText.trim() === "") {
@@ -147,6 +147,24 @@
 			};
 
 			// -- END OF STEP 3
+		</script>
+		<script type="text/javascript">
+			function handleRedirect() {
+				// Get the current URL
+				const url = new URL(window.location.href);
+
+				// Extract the code from the URL
+				const code = url.searchParams.get("code");
+
+				// Check if a code was found
+				if (code) {
+					// Update the 'code' input field with the code
+					document.getElementById("code").value = code;
+				}
+			}
+
+			// Call the handleRedirect function when the page loads
+			window.onload = handleRedirect;
 		</script>
 	</body>
 </html>
