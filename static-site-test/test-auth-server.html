@@ -113,7 +113,20 @@
 				"https://2cz71rx2zb.execute-api.us-east-1.amazonaws.com/dev/api/get-events";
 
 			getEvents.onclick = function () {
-				const { access_token } = JSON.parse(accessTokenElement.innerText);
+				if (accessTokenElement.innerText.trim() === "") {
+					console.error("Access token is not set.");
+					return;
+				}
+
+				let parsedToken;
+				try {
+					parsedToken = JSON.parse(accessTokenElement.innerText);
+				} catch (err) {
+					console.error("Invalid access token format:", err);
+					return;
+				}
+
+				const { access_token } = parsedToken;
 				const eventRequest = getCalendarEvents + "/" + access_token;
 				fetch(eventRequest)
 					.then(function (response) {
@@ -132,6 +145,7 @@
 						);
 					});
 			};
+
 			// -- END OF STEP 3
 		</script>
 	</body>
