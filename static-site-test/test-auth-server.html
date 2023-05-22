@@ -32,10 +32,6 @@
 				After you’re redirected back to your Meet app on GitHub, copy the code
 				from the URI.
 			</p>
-			<!-- STEP 3 -- MAKE SURE STEP 3 WORKS BEFORE MOVING ON-->
-			<h4>Step 3: Get the calendar events using your access token</h4>
-			<button id="getEvents">Get Events</button>
-			<p id="events"></p>
 			<br />
 			<label
 				>Code input
@@ -43,6 +39,9 @@
 			</label>
 			<button id="getToken">Get Token</button>
 			<p id="accessToken"></p>
+			<h4>Step 3: Get the calendar events using your access token</h4>
+			<button id="getEvents">Get Events</button>
+			<p id="events"></p>
 		</main>
 		<script type="text/javascript">
 			// --------------------- STEP 1
@@ -51,14 +50,10 @@
 			const resultLink = document.getElementById("authURL");
 			// Replace this with your own endpoint
 			const getAuthURL =
-				"https://syovtibn2nrvwpptbxfuez53ii0mvjaq.lambda-url.us-east-1.on.aws/";
-
+				"https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.readonly&response_type=code&client_id=297605947661-0kf5mec7s2ehsuae32angpccmumbcqpa.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fjonathankerth.github.io%2Fmeet%2F";
 			getURLElement.onclick = function () {
 				fetch(getAuthURL)
 					.then(function (response) {
-						if (!response.ok) {
-							throw new Error(`HTTP error! status: ${response.status}`);
-						}
 						return response.json();
 					})
 					.then(function (json) {
@@ -68,12 +63,6 @@
 						// then add it to the html
 						resultElement.innerText = result;
 						resultLink.href = authUrl;
-					})
-					.catch(function (error) {
-						console.error(
-							"There was a problem with the fetch operation: ",
-							error
-						);
 					});
 			};
 			// --------------------- END OF STEP 1
@@ -83,88 +72,42 @@
 			const getAccessToken = document.getElementById("getToken");
 			const accessTokenElement = document.getElementById("accessToken");
 			const getToken =
-				"https://les6ejvgz6hmi5lycj22tbufbm0emrlg.lambda-url.us-east-1.on.aws/";
+				"https://onsd46zxpzxzcnritt2qes2ytu0goqpg.lambda-url.us-east-2.on.aws/";
 
 			getAccessToken.onclick = function () {
 				let code = codeValue.value;
+
+				// if the authorization code is not URL-encoded, then URL-encode it.
+				if (decodeURIComponent(code) === code) {
+					code = encodeURIComponent(codeValue.value);
+				}
 				const getTokenRequest = getToken + "/" + code;
 				fetch(getTokenRequest)
 					.then(function (response) {
-						if (!response.ok) {
-							throw new Error(`HTTP error! status: ${response.status}`);
-						}
 						return response.json();
 					})
 					.then(function (json) {
 						accessTokenElement.innerText = JSON.stringify(json);
-					})
-					.catch(function (error) {
-						console.error(
-							"There was a problem with the fetch operation: ",
-							error
-						);
 					});
 			};
 			// --------------------- END OF STEP 2
-			// -- STEP 3
 			const getEvents = document.getElementById("getEvents");
 			const events = document.getElementById("events");
 			const getCalendarEvents =
-				"https://ezkyhskklwyt4mwdeadlecxegu0obbvq.lambda-url.us-east-1.on.aws/";
+				"https://ot3f7ssoz77zg7pijmza6hjqwi0wffmr.lambda-url.us-east-2.on.aws/";
 
 			getEvents.onclick = function () {
-				if (accessTokenElement.innerText.trim() === "") {
-					console.error("Access token is not set.");
-					return;
-				}
-
-				let parsedToken;
-				try {
-					parsedToken = JSON.parse(accessTokenElement.innerText);
-				} catch (err) {
-					console.error("Invalid access token format:", err);
-					return;
-				}
-
-				const { access_token } = parsedToken;
+				const { access_token } = JSON.parse(accessTokenElement.innerText);
 				const eventRequest = getCalendarEvents + "/" + access_token;
 				fetch(eventRequest)
 					.then(function (response) {
-						if (!response.ok) {
-							throw new Error(`HTTP error! status: ${response.status}`);
-						}
 						return response.json();
 					})
 					.then(function (json) {
 						events.innerText = JSON.stringify(json, null, 2);
-					})
-					.catch(function (error) {
-						console.error(
-							"There was a problem with the fetch operation: ",
-							error
-						);
 					});
 			};
-
 			// -- END OF STEP 3
-		</script>
-		<script type="text/javascript">
-			function handleRedirect() {
-				// Get the current URL
-				const url = new URL(window.location.href);
-
-				// Extract the code from the URL
-				const code = url.searchParams.get("code");
-
-				// Check if a code was found
-				if (code) {
-					// Update the 'code' input field with the code
-					document.getElementById("code").value = code;
-				}
-			}
-
-			// Call the handleRedirect function when the page loads
-			window.onload = handleRedirect;
 		</script>
 	</body>
 </html>

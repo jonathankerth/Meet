@@ -1,10 +1,16 @@
 const { google } = require("googleapis");
-// eslint-disable-next-line no-unused-vars
 const OAuth2 = google.auth.OAuth2;
 const calendar = google.calendar("v3");
-
+/**
+ * SCOPES allows you to set access levels; this is set to read only for now because you don"t have access rights to
+ * update the calendar yourself. For more info, check out the SCOPES documentation at this link: https://developers.google.com/identity/protocols/oauth2/scopes
+ */
 const SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
 
+/**
+ * Credentials are values required to get access to your calendar. If you see “process.env” this means
+ * the value is in the “config.json” file. This is a best practice as it keeps your API secrets hidden. Please remember to add “config.json” to your “.gitignore” file.
+ */
 const credentials = {
 	client_id: process.env.CLIENT_ID,
 	project_id: process.env.PROJECT_ID,
@@ -13,12 +19,9 @@ const credentials = {
 	auth_uri: "https://accounts.google.com/o/oauth2/auth",
 	token_uri: "https://oauth2.googleapis.com/token",
 	auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-	redirect_uris: [
-		"https://jonathankerth.github.io/meet",
-		"http://localhost:3000",
-	],
+	redirect_uris: ["https://plaidpeacoat.github.io/Meet-App"],
 	javascript_origins: [
-		"https://jonathankerth.github.io",
+		"https://plaidpeacoat.github.io",
 		"http://localhost:3000",
 	],
 };
