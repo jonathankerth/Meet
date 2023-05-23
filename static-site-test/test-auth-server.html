@@ -2,7 +2,6 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta http-equiv="x-ua-compatible" content="ie=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 		<title>Test Auth Server</title>
@@ -50,7 +49,7 @@
 			const resultLink = document.getElementById("authURL");
 			// Replace this with your own endpoint
 			const getAuthURL =
-				"https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar.readonly&response_type=code&client_id=297605947661-0kf5mec7s2ehsuae32angpccmumbcqpa.apps.googleusercontent.com&redirect_uri=https%3A%2F%2Fjonathankerth.github.io%2Fmeet%2F";
+				"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-auth-url";
 			getURLElement.onclick = function () {
 				fetch(getAuthURL)
 					.then(function (response) {
@@ -72,7 +71,7 @@
 			const getAccessToken = document.getElementById("getToken");
 			const accessTokenElement = document.getElementById("accessToken");
 			const getToken =
-				"https://onsd46zxpzxzcnritt2qes2ytu0goqpg.lambda-url.us-east-2.on.aws/";
+				" https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/token";
 
 			getAccessToken.onclick = function () {
 				let code = codeValue.value;
@@ -94,7 +93,7 @@
 			const getEvents = document.getElementById("getEvents");
 			const events = document.getElementById("events");
 			const getCalendarEvents =
-				"https://ot3f7ssoz77zg7pijmza6hjqwi0wffmr.lambda-url.us-east-2.on.aws/";
+				"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-events";
 
 			getEvents.onclick = function () {
 				const { access_token } = JSON.parse(accessTokenElement.innerText);
