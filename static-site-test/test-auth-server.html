@@ -3,10 +3,8 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
-
 		<title>Test Auth Server</title>
 	</head>
-
 	<body>
 		<style>
 			#container {
@@ -16,7 +14,6 @@
 				margin-top: 25px;
 			}
 		</style>
-
 		<main id="container">
 			<h1>OAuth2 Test</h1>
 			<h4><b>Step 1:</b> Get the OAuth URL</h4>
@@ -25,7 +22,6 @@
 			<p id="result"></p>
 			<a id="authURL" href target="_blank">Click to authorize</a>
 			<!-- STEP 2 -- MAKE SURE STEP 1 WORKS BEFORE MOVING ON-->
-
 			<h4>Step 2: Get your code and exchange for an access token</h4>
 			<p>
 				After you’re redirected back to your Meet app on GitHub, copy the code
@@ -56,31 +52,24 @@
 						return response.json();
 					})
 					.then(function (json) {
-						const result = JSON.stringify(json);
-						// we get the value of authUrl
-						const { authUrl } = JSON.parse(result);
-						// then add it to the html
-						resultElement.innerText = result;
+						const { authUrl } = json;
+						resultElement.innerText = JSON.stringify(json);
 						resultLink.href = authUrl;
 					});
 			};
 			// --------------------- END OF STEP 1
-
 			// --------------------- STEP 2
 			const codeValue = document.getElementById("code");
 			const getAccessToken = document.getElementById("getToken");
 			const accessTokenElement = document.getElementById("accessToken");
 			const getToken =
-				" https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/token";
-
+				"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/token";
 			getAccessToken.onclick = function () {
 				let code = codeValue.value;
-
-				// if the authorization code is not URL-encoded, then URL-encode it.
 				if (decodeURIComponent(code) === code) {
 					code = encodeURIComponent(codeValue.value);
 				}
-				const getTokenRequest = getToken + "/" + code;
+				const getTokenRequest = `${getToken}/${code}`;
 				fetch(getTokenRequest)
 					.then(function (response) {
 						return response.json();
@@ -110,3 +99,10 @@
 		</script>
 	</body>
 </html>
+
+<!-- console: https://console.serverless.com/favourableermine/metrics/awsLambda?globalEnvironments=dev&globalNamespace=auth-server&globalRegions=us-east-2&globalScope=awsLambda&globalTimeFrame=15m
+endpoints:
+  GET - https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-auth-url
+  GET - https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/token/{code}
+  GET - https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-events
+functions: -->
