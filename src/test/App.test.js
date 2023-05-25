@@ -4,6 +4,7 @@ import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import App from "../App";
 import EventList from "../EventList";
 import CitySearch from "../CitySearch";
+import NumberOfEvents from "../NumberOfEvents"; // Add this line
 
 configure({ adapter: new Adapter() });
 
@@ -19,5 +20,9 @@ describe("<App /> component", () => {
 
 	test("render CitySearch", () => {
 		expect(AppWrapper.find(CitySearch)).toHaveLength(1);
+	});
+
+	test("render NumberOfEvents component", () => {
+		expect(AppWrapper.find(NumberOfEvents)).toHaveLength(1);
 	});
 });

@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import "./App.css";
-import EventList from "./EventList.js";
 import CitySearch from "./CitySearch";
+import Event from "./Event";
+import EventList from "./EventList";
+import NumberOfEvents from "./NumberofEvents";
 
 class App extends Component {
 	render() {
@@ -9,6 +11,8 @@ class App extends Component {
 			<div className="App">
 				<EventList />
 				<CitySearch />
+				<NumberOfEvents />
+				<Event />
 			</div>
 		);
 	}
