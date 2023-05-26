@@ -12,6 +12,11 @@ class Event extends Component {
 		const { event } = this.props;
 		const { collapsed } = this.state;
 
+		if (!event) {
+			// Handle case when event prop is missing or undefined
+			return <div className="event">Event details not available</div>;
+		}
+
 		return (
 			<div className="event">
 				<h1 className="summary">{event.summary}</h1>
