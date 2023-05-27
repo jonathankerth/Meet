@@ -1,4 +1,5 @@
 # Meet App
+
 Objective
 The objective of this project is to build a serverless, progressive web application (PWA) with React using a test-driven development (TDD) technique. The application uses the Google Calendar API to fetch upcoming events.
 
@@ -24,10 +25,8 @@ As a user, I would like to be able to use the app when offline so that I can see
 As a user, I would like to be able to add the app shortcut to my home screen so that I can open the app faster.
 As a user, I would like to be able to see a chart showing the upcoming events in each city so that I know what events are organized in which city.
 
-
 Tecnical Requirements
 Javascript, React, Node.js, AWS
-
 
 # Serverless Functions in My Meet App
 
@@ -37,13 +36,13 @@ In my Meet App, I'm leveraging the power of serverless computing to handle data 
 
 ### Interacting with Google Calendar API
 
-I use AWS Lambda functions to fetch and process data from the Google Calendar API. When a user wants to view events in a certain city, a Lambda function is triggered. This function makes a request to the Google Calendar API, retrieves relevant event data, and returns it to the client. 
+I use AWS Lambda functions to fetch and process data from the Google Calendar API. When a user wants to view events in a certain city, a Lambda function is triggered. This function makes a request to the Google Calendar API, retrieves relevant event data, and returns it to the client.
 
 This helps streamline the process of interacting with the API and provides a layer of abstraction between my app and the API, keeping my front-end code cleaner and more focused on rendering UI components.
 
 ### Managing Event Data
 
-In addition to fetching data, serverless functions also handle the filtering and sorting of event data. When the user chooses to filter events by city or specify the number of events they wish to view, these preferences are passed to my Lambda function, which then filters and returns the desired data. 
+In addition to fetching data, serverless functions also handle the filtering and sorting of event data. When the user chooses to filter events by city or specify the number of events they wish to view, these preferences are passed to my Lambda function, which then filters and returns the desired data.
 
 This approach offloads the potentially computationally heavy task of data processing from the client-side, ensuring smooth performance of my app regardless of the amount of data to process.
 
@@ -59,4 +58,3 @@ I also use serverless functions to cache event data for offline use. When events
 - **Availability**: Serverless functions are always available and ready to execute, ensuring a seamless experience for my users.
 
 As I progress in building the Meet App, I aim to leverage more capabilities of serverless architecture to keep my application robust, scalable, and efficient.
-
