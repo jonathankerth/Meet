@@ -16,7 +16,7 @@ class NumberOfEvents extends Component {
 				query: value,
 				errorText: "",
 			});
-			this.props.updateEvents(this.props.selectedCity, value);
+			this.props.updateEvents(value);
 		}
 		if (value < 1 || value > 32) {
 			this.setState({
