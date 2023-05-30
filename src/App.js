@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
 import CitySearch from "./CitySearch";
-import Event from "./Event";
 import EventList from "./EventList";
 import NumberOfEvents from "./NumberOfEvents";
 import { getEvents, extractLocations } from "./api";
