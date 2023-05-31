@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow, configure, mount } from "enzyme";
+import { shallow, mount, configure } from "enzyme";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import App from "../App";
 import EventList from "../EventList";
@@ -9,6 +9,16 @@ import { mockData } from "../mock-Data";
 import { extractLocations, getEvents } from "../api";
 
 configure({ adapter: new Adapter() });
+
+// Mock the getEvents function
+jest.mock("../api");
+
+// Mock the localStorage object
+global.localStorage = {
+	getItem: jest.fn(),
+	setItem: jest.fn(),
+	removeItem: jest.fn(),
+};
 
 // integration testing
 describe("<App /> integration", () => {
