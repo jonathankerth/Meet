@@ -1,6 +1,4 @@
 module.exports = {
-	// ...other configurations
-	testEnvironment: "node",
 	moduleNameMapper: {
 		"^puppeteer$": "puppeteer-core",
 		"^.+\\.css$": "<rootDir>/__mocks__/styleMock.js",
@@ -9,4 +7,5 @@ module.exports = {
 		"^.+\\.jsx?$": "babel-jest",
 	},
 	transformIgnorePatterns: ["/node_modules/(?!axios).+\\.js$"],
+	testEnvironment: "node",
 };
