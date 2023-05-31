@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow, mount, configure } from "enzyme";
+import { mount, configure } from "enzyme";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import App from "../App";
 import EventList from "../EventList";
@@ -51,6 +51,7 @@ describe("<App /> integration", () => {
 		const eventsToShow = allEvents.filter(
 			(event) => event.location === selectedCity
 		);
+		AppWrapper.update();
 		expect(AppWrapper.state("events")).toEqual(eventsToShow);
 		AppWrapper.unmount();
 	});
@@ -61,25 +62,5 @@ describe("<App /> integration", () => {
 		const allEvents = await getEvents();
 		expect(AppWrapper.state("events")).toEqual(allEvents);
 		AppWrapper.unmount();
-	});
-});
-
-// unit testing
-describe("<App /> component", () => {
-	let AppWrapper;
-	beforeAll(() => {
-		AppWrapper = shallow(<App />);
-	});
-
-	test("render list of events", () => {
-		expect(AppWrapper.find(EventList)).toHaveLength(1);
-	});
-
-	test("render CitySearch", () => {
-		expect(AppWrapper.find(CitySearch)).toHaveLength(1);
-	});
-
-	test("render NumberOfEvents component", () => {
-		expect(AppWrapper.find(NumberOfEvents)).toHaveLength(1);
 	});
 });

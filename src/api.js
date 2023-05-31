@@ -1,6 +1,13 @@
-import axios from "axios";
 import { mockData } from "./mock-Data";
 import NProgress from "nprogress";
+
+const axios = require("axios");
+
+export const extractLocations = (events) => {
+	var extractLocations = events.map((event) => event.location);
+	var locations = [...new Set(extractLocations)];
+	return locations;
+};
 
 export const getAccessToken = async () => {
 	const accessToken = localStorage.getItem("access_token");
@@ -12,7 +19,7 @@ export const getAccessToken = async () => {
 		const code = await searchParams.get("code");
 		if (!code) {
 			const results = await axios.get(
-				"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-auth-url"
+				"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-auth-url/"
 			);
 			const { authUrl } = results.data;
 			return (window.location.href = authUrl);
@@ -21,47 +28,15 @@ export const getAccessToken = async () => {
 	}
 	return accessToken;
 };
-const checkToken = async (accessToken) => {
+
+export const checkToken = async (accessToken) => {
 	const result = await fetch(
-		`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=`
+		`https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
 	)
 		.then((res) => res.json())
 		.catch((error) => error.json());
 
 	return result;
-};
-
-export const getEvents = async () => {
-	NProgress.start();
-
-	if (window.location.href.startsWith("http://localhost")) {
-		NProgress.done();
-		return mockData;
-	}
-
-	const token = await getAccessToken();
-
-	if (token) {
-		removeQuery();
-		const url =
-			"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-events" +
-			"/" +
-			token;
-		const result = await axios.get(url);
-		if (result.data) {
-			var locations = extractLocations(result.data.events);
-			localStorage.setItem("lastEvents", JSON.stringify(result.data));
-			localStorage.setItem("locations", JSON.stringify(locations));
-		}
-		NProgress.done();
-		return result.data.events;
-	}
-};
-
-export const extractLocations = (events) => {
-	var extractLocations = events.map((event) => event.location);
-	var locations = [...new Set(extractLocations)];
-	return locations;
 };
 
 const removeQuery = () => {
@@ -79,18 +54,54 @@ const removeQuery = () => {
 };
 
 const getToken = async (code) => {
-	const encodeCode = encodeURIComponent(code);
-	const { access_token } = await fetch(
-		"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/token" +
-			"/" +
-			encodeCode
-	)
-		.then((res) => {
-			return res.json();
-		})
-		.catch((error) => error);
+	try {
+		const encodeCode = encodeURIComponent(code);
+		// eslint-disable-next-line
+		const response = await fetch(
+			"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/token/" +
+				"/" +
+				encodeCode
+		);
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+		const { access_token } = await response.json();
+		access_token && localStorage.setItem("access_token", access_token);
+		return access_token;
+	} catch (error) {
+		error.json();
+	}
+};
 
-	access_token && localStorage.setItem("access_token", access_token);
+export const getEvents = async (numberOfResults) => {
+	NProgress.start();
 
-	return access_token;
+	if (window.location.href.startsWith("http://localhost")) {
+		NProgress.done();
+		return mockData;
+	}
+
+	if (!navigator.onLine) {
+		const data = localStorage.getItem("lastEvents");
+		NProgress.done();
+		return data ? JSON.parse(data).events : [];
+	}
+
+	const token = await getAccessToken();
+
+	if (token) {
+		removeQuery();
+		// eslint-disable-next-line
+		const url = `https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-events/${token}?maxResults=${
+			numberOfResults || 32
+		}`;
+		const result = await axios.get(url);
+		if (result.data) {
+			var locations = extractLocations(result.data.events);
+			localStorage.setItem("lastEvents", JSON.stringify(result.data));
+			localStorage.setItem("locations", JSON.stringify(locations));
+		}
+		NProgress.done();
+		return result.data.events;
+	}
 };
