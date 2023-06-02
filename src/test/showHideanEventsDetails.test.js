@@ -1,14 +1,23 @@
 import { loadFeature, defineFeature } from "jest-cucumber";
+import React from "react";
+import { mount } from "enzyme";
+import App from "../App";
 
-const feature = loadFeature("./src/features/showHideAnEventsDetails.feature");
+const feature = loadFeature("../features/showHideAnEventsDetails.feature");
 
 defineFeature(feature, (test) => {
+	let AppWrapper;
 	test("An event element is collapsed by default", ({ given, when, then }) => {
-		given("user has searched for a city", () => {});
+		given("that a user has not selected a city", () => {});
 
-		when("the events are listed", () => {});
+		when("the user opens the app and performs no action", () => {
+			AppWrapper = mount(<App />);
+		});
 
-		then("the event details should be collapsed by default", () => {});
+		then("all events details should be hidden.", () => {
+			AppWrapper.update();
+			expect(AppWrapper.find(".event .expanded")).toHaveLength(0);
+		});
 	});
 
 	test("User can expand an event to see its details", ({
@@ -16,11 +25,18 @@ defineFeature(feature, (test) => {
 		when,
 		then,
 	}) => {
-		given("the city-search list is displayed", () => {});
+		given("that a user has selected an event", () => {
+			AppWrapper = mount(<App />);
+		});
 
-		when("a user clicks on the details button", () => {});
+		when("the user clicks on the event show details button", () => {
+			AppWrapper.update();
+			AppWrapper.find(".event .details-button").at(0).simulate("click");
+		});
 
-		then("the event details should expand displaying its details", () => {});
+		then("the event details should be displayed.", () => {
+			expect(AppWrapper.find(".event .event-details")).toHaveLength(1);
+		});
 	});
 
 	test("User can collapse an event to hide its details", ({
@@ -28,13 +44,19 @@ defineFeature(feature, (test) => {
 		when,
 		then,
 	}) => {
-		given("an event details are expanded", () => {});
+		given("that a user has finished viewing a selected event", async () => {
+			AppWrapper = await mount(<App />);
+			AppWrapper.update();
+			AppWrapper.find(".event .details-button").at(0).simulate("click");
+		});
 
-		when("user clicks collapse button", () => {});
+		when("the user clicks on the details button again", () => {
+			AppWrapper.update();
+			AppWrapper.find(".event .details-button").at(0).simulate("click");
+		});
 
-		then(
-			"the details should collapse within the specific event, hiding its details",
-			() => {}
-		);
+		then("the event details should be hidden.", () => {
+			expect(AppWrapper.find(".event .event-details")).toHaveLength(0);
+		});
 	});
 });

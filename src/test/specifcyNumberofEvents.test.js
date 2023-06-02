@@ -1,18 +1,35 @@
 import { loadFeature, defineFeature } from "jest-cucumber";
+import React from "react";
+import { mount } from "enzyme";
+import App from "../App";
 
-const feature = loadFeature("./src/features/specifyNumberOfEvents.feature");
+const feature = loadFeature("../features/specifyNumberOfEvents.feature");
 
 defineFeature(feature, (test) => {
-	test("When user hasn’t specified a number, 32 is the default number", ({
+	let AppWrapper;
+
+	test("When user has not specified a number let 32 be the default number", ({
 		given,
 		when,
 		then,
 	}) => {
-		given("a blank number of events field", () => {});
-		when("a user clicks search", () => {});
+		given("that a user has not specified a number of events", () => {
+			AppWrapper = mount(<App />);
+		});
+
+		when("selecting cities", () => {
+			AppWrapper.update();
+		});
+
 		then(
-			/^show the default number of (\d+) events to be displayed$/,
-			(arg0) => {}
+			/^A default number of (\d+) is loaded on the page$/,
+			(expectedNumber) => {
+				const NumberOfEventsWrapper =
+					AppWrapper.find(NumberOfEvents).instance();
+				expect(NumberOfEventsWrapper.state.query).toBe(
+					parseInt(expectedNumber)
+				);
+			}
 		);
 	});
 
@@ -21,8 +38,21 @@ defineFeature(feature, (test) => {
 		when,
 		then,
 	}) => {
-		given("a user enters a number in the number of events field", () => {});
-		when("the user is on the event search page", () => {});
-		then("display the number of events specified by the user", () => {});
+		given("that the user does not want to view all events", () => {
+			AppWrapper = mount(<App />);
+		});
+
+		when("user changes the number of events in the input box", () => {
+			const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents).instance();
+			NumberOfEventsWrapper.setState({ query: 10 }); // Replace 10 with the desired number
+			AppWrapper.update();
+		});
+
+		then(
+			"the User should be able to change the number of events they want to see.",
+			() => {
+				expect(AppWrapper.find(EventList).props().events).toHaveLength(10); // Replace 10 with the desired number
+			}
+		);
 	});
 });
