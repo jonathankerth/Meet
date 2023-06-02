@@ -1,11 +1,11 @@
-Feature: Specify number of events
+Feature: Specify Number Of Events
 
-Scenario: When user hasn’t specified a number, 32 is the default number
-Given a blank number of events field
-When a user clicks search
-Then show the default number of 32 events to be displayed
+Scenario: When user has not specified a number let 32 be the default number
+Given that a user has not specified a number of events
+When selecting cities
+Then A default number of 32 is loaded on the page
 
 Scenario: User can change the number of events they want to see
-Given a user enters a number in the number of events field
-When the user is on the event search page
-Then display the number of events specified by the user
+Given that the user does not want to view all events
+When user changes the number of events in the input box
+Then the User should be able to change the number of events they want to see.
