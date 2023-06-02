@@ -2,8 +2,10 @@ import { loadFeature, defineFeature } from "jest-cucumber";
 import React from "react";
 import { mount } from "enzyme";
 import App from "../App";
+import NumberOfEvents from "../NumberOfEvents";
+import EventList from "../EventList";
 
-const feature = loadFeature("../features/specifyNumberOfEvents.feature");
+const feature = loadFeature("./src/features/specifyNumberOfEvents.feature");
 
 defineFeature(feature, (test) => {
 	let AppWrapper;
@@ -44,14 +46,14 @@ defineFeature(feature, (test) => {
 
 		when("user changes the number of events in the input box", () => {
 			const NumberOfEventsWrapper = AppWrapper.find(NumberOfEvents).instance();
-			NumberOfEventsWrapper.setState({ query: 10 }); // Replace 10 with the desired number
+			NumberOfEventsWrapper.setState({ query: 2 });
 			AppWrapper.update();
 		});
 
 		then(
 			"the User should be able to change the number of events they want to see.",
 			() => {
-				expect(AppWrapper.find(EventList).props().events).toHaveLength(10); // Replace 10 with the desired number
+				expect(AppWrapper.find(EventList).props().events).toHaveLength(2);
 			}
 		);
 	});
