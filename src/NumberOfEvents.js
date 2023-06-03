@@ -16,7 +16,7 @@ class NumberOfEvents extends Component {
 				query: value,
 				errorText: "",
 			});
-			this.props.updateEvents(value);
+			this.props.updateEvents(undefined, value);
 		} else {
 			this.setState({
 				query: value,
