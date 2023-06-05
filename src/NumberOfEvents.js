@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { ErrorAlert } from "./Alert";
 
 class NumberOfEvents extends Component {
 	constructor() {
@@ -20,7 +21,7 @@ class NumberOfEvents extends Component {
 		} else {
 			this.setState({
 				query: value,
-				errorText: "Please enter a valid number",
+				errorText: "Please enter a valid number between 1 and 32",
 			});
 		}
 	};
@@ -28,6 +29,7 @@ class NumberOfEvents extends Component {
 	render() {
 		return (
 			<div className="numberOfEvents">
+				<ErrorAlert text={this.state.errorText} />
 				<input
 					type="number"
 					className="numberOfEvents"
