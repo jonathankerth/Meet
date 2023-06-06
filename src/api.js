@@ -59,7 +59,6 @@ const getToken = async (code) => {
 		// eslint-disable-next-line
 		const response = await fetch(
 			"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/token/" +
-				"/" +
 				encodeCode
 		);
 		if (!response.ok) {
