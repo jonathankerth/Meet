@@ -17,18 +17,18 @@ class App extends Component {
 
 	updateEvents = (location, eventCount) => {
 		getEvents().then((events) => {
-			let locationEvents = events;
-			if (location) {
-				locationEvents = events.filter((event) => event.location === location);
+			let locationEvents = events.filter(
+				(event) => event.location === location
+			);
+
+			if (eventCount !== undefined) {
+				this.setState({ numberOfEvents: eventCount });
 			}
 
-			let filteredEvents = locationEvents;
-			if (eventCount !== undefined) {
-				filteredEvents = locationEvents.slice(0, eventCount);
-			}
+			locationEvents = locationEvents.slice(0, this.state.numberOfEvents);
 
 			this.setState({
-				events: filteredEvents,
+				events: locationEvents,
 			});
 		});
 	};
