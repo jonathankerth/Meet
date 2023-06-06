@@ -51,9 +51,11 @@ class App extends Component {
 			});
 		}
 	}
+
 	componentWillUnmount() {
 		this.mounted = false;
 	}
+
 	render() {
 		if (this.state.showWelcomeScreen === undefined)
 			return <div className="App" />;
@@ -71,11 +73,11 @@ class App extends Component {
 							locations={this.state.locations}
 							updateEvents={this.updateEvents}
 						/>
-						<NumberOfEvents
+						<NumberOfEvents updateEvents={this.updateEvents} />
+						<EventList
+							events={this.state.events}
 							numberOfEvents={this.state.numberOfEvents}
-							updateEvents={this.updateEvents}
 						/>
-						<EventList events={this.state.events} />
 					</>
 				)}
 			</div>
