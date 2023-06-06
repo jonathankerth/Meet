@@ -3,10 +3,12 @@ import Event from "./Event";
 
 class EventList extends Component {
 	render() {
-		const { events } = this.props;
+		const { events, numberofevents } = this.props;
+		const filteredEvents = events.slice(0, numberofevents);
+
 		return (
 			<ul className="EventList">
-				{events.map((event) => (
+				{filteredEvents.map((event) => (
 					<li key={event.id}>
 						<Event event={event} />
 					</li>
