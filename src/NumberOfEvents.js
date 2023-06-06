@@ -25,24 +25,26 @@ class NumberOfEvents extends Component {
 		}
 	};
 
-	componentDidUpdate(prevProps, prevState) {
-		if (prevState.numberofevents !== this.state.numberofevents) {
-			this.props.updateEvents(this.state.numberofevents);
-		}
-	}
+	handleSubmit = (event) => {
+		event.preventDefault();
+		this.props.updateEvents(this.state.numberofevents);
+	};
 
 	render() {
 		return (
 			<div className="numberOfEvents">
 				<ErrorAlert text={this.state.errorText} />
-				<input
-					type="number"
-					className="numberOfEvents"
-					min={1}
-					max={32}
-					value={this.state.numberofevents}
-					onChange={this.handleInputChanged}
-				/>
+				<form onSubmit={this.handleSubmit}>
+					<input
+						type="number"
+						className="numberOfEvents"
+						min={1}
+						max={32}
+						value={this.state.numberofevents}
+						onChange={this.handleInputChanged}
+					/>
+					<input type="submit" value="Update" />
+				</form>
 			</div>
 		);
 	}
