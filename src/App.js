@@ -15,22 +15,16 @@ class App extends Component {
 		showWelcomeScreen: undefined,
 	};
 
-	updateEvents = (location, eventCount) => {
-		getEvents().then((events) => {
-			let locationEvents = events.filter(
+	getData = () => {
+		const { locations, events } = this.state;
+		const data = locations.map((location) => {
+			const number = events.filter(
 				(event) => event.location === location
-			);
-
-			if (eventCount !== undefined) {
-				this.setState({ numberOfEvents: eventCount });
-			}
-
-			locationEvents = locationEvents.slice(0, this.state.numberOfEvents);
-
-			this.setState({
-				events: locationEvents,
-			});
+			).length;
+			const city = location.split(", ").shift();
+			return { city, number };
 		});
+		return data;
 	};
 
 	async componentDidMount() {
@@ -54,6 +48,21 @@ class App extends Component {
 	componentWillUnmount() {
 		this.mounted = false;
 	}
+
+	updateEvents = (location, eventCount) => {
+		if (location) this.setState({ location });
+		if (eventCount) this.setState({ numberOfEvents: eventCount });
+		getEvents().then((events) => {
+			const locationEvents =
+				this.state.location === "all"
+					? events
+					: events.filter((event) => event.location === this.state.location);
+			this.setState({
+				events: locationEvents.slice(0, this.state.numberOfEvents),
+			});
+		});
+	};
+
 	render() {
 		if (this.state.showWelcomeScreen === undefined)
 			return <div className="App" />;
