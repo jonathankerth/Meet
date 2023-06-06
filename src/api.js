@@ -59,6 +59,7 @@ const getToken = async (code) => {
 		// eslint-disable-next-line
 		const response = await fetch(
 			"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/token/" +
+				"/" +
 				encodeCode
 		);
 		if (!response.ok) {
@@ -90,25 +91,18 @@ export const getEvents = async (numberOfResults) => {
 
 	if (token) {
 		removeQuery();
+		// eslint-disable-next-line
 		const url =
-			"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-events/" +
+			`https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-events` +
 			"/" +
 			token;
 		const result = await axios.get(url);
-		console.log("API response:", result); // Add this line to log the response
 		if (result.data) {
-			var events = result.data.events;
-			var berlinEvents = events.filter(
-				(event) => event.location === "Berlin, Germany"
-			);
-			var locations = extractLocations(berlinEvents);
+			var locations = extractLocations(result.data.events);
 			localStorage.setItem("lastEvents", JSON.stringify(result.data));
 			localStorage.setItem("locations", JSON.stringify(locations));
-			NProgress.done();
-			return berlinEvents;
 		}
+		NProgress.done();
+		return result.data.events;
 	}
-
-	NProgress.done();
-	return [];
 };
