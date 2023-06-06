@@ -1,7 +1,7 @@
 import { mockData } from "./mock-Data";
 import NProgress from "nprogress";
 
-import axios from "axios";
+const axios = require("axios");
 
 export const extractLocations = (events) => {
 	var extractLocations = events.map((event) => event.location);
@@ -91,12 +91,9 @@ export const getEvents = async (numberOfResults) => {
 
 	if (token) {
 		removeQuery();
-		const url =
-			"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-events" +
-			"/" +
-			token;
+		// eslint-disable-next-line
+		const url = `https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-events`;
 		const result = await axios.get(url);
-		console.log("API response:", result); // Add this line to log the response
 		if (result.data) {
 			var locations = extractLocations(result.data.events);
 			localStorage.setItem("lastEvents", JSON.stringify(result.data));
