@@ -5,7 +5,7 @@ class NumberOfEvents extends Component {
 	constructor() {
 		super();
 		this.state = {
-			numberofevents: 32,
+			query: 32,
 			errorText: "",
 		};
 	}
@@ -14,37 +14,30 @@ class NumberOfEvents extends Component {
 		const value = event.target.value;
 		if (value >= 1 && value <= 32) {
 			this.setState({
-				numberofevents: value,
+				query: value,
 				errorText: "",
 			});
+			this.props.updateEvents(undefined, value);
 		} else {
 			this.setState({
-				numberofevents: value,
+				query: value,
 				errorText: "Please enter a valid number between 1 and 32",
 			});
 		}
-	};
-
-	handleSubmit = (event) => {
-		event.preventDefault();
-		this.props.updateEvents(this.state.numberofevents);
 	};
 
 	render() {
 		return (
 			<div className="numberOfEvents">
 				<ErrorAlert text={this.state.errorText} />
-				<form onSubmit={this.handleSubmit}>
-					<input
-						type="number"
-						className="numberOfEvents"
-						min={1}
-						max={32}
-						value={this.state.numberofevents}
-						onChange={this.handleInputChanged}
-					/>
-					<input type="submit" value="Update" />
-				</form>
+				<input
+					type="number"
+					className="numberOfEvents"
+					min={1}
+					max={32}
+					value={this.state.query}
+					onChange={this.handleInputChanged}
+				/>
 			</div>
 		);
 	}
