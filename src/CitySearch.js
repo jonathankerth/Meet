@@ -19,7 +19,7 @@ class CitySearch extends Component {
 			this.setState({
 				query: value,
 				infoText:
-					"We cannot find the city you are looking for. Please try another city. If offline, this may not be true due to caching.",
+					"We can not find the city you are looking for. Please try another city. If offline, this may not be true due to caching.",
 			});
 		} else {
 			return this.setState({
@@ -29,7 +29,6 @@ class CitySearch extends Component {
 			});
 		}
 	};
-
 	handleItemClicked = (suggestion) => {
 		this.setState({
 			query: suggestion,
@@ -40,20 +39,13 @@ class CitySearch extends Component {
 	};
 
 	render() {
-		const { showSuggestions, query, infoText } = this.state;
-		const { isWelcomeScreenVisible, isLoggedIn } = this.props;
-
-		if (isWelcomeScreenVisible || !isLoggedIn) {
-			return null; // Hide the search bar when WelcomeScreen is visible or user is not logged in
-		}
-
 		return (
 			<div className="CitySearch">
-				<InfoAlert text={infoText} />
+				<InfoAlert text={this.state.infoText} />
 				<input
 					type="text"
 					className="city"
-					value={query}
+					value={this.state.query}
 					onChange={this.handleInputChanged}
 					onFocus={() => {
 						this.setState({ showSuggestions: true });
@@ -61,7 +53,7 @@ class CitySearch extends Component {
 				/>
 				<ul
 					className="suggestions"
-					style={showSuggestions ? {} : { display: "none" }}
+					style={this.state.showSuggestions ? {} : { display: "none" }}
 				>
 					{this.state.suggestions.map((suggestion, index) => (
 						<li key={index} onClick={() => this.handleItemClicked(suggestion)}>
