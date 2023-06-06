@@ -29,7 +29,7 @@ o.svg"
 				</div>
 			</div>
 			<a
-				href="https://jonathankerth.github.io/meet/privacy.html"
+				href="https://github.com/jonathankerth/meet/blob/main/public/Meet%20Privacy%20Policy.html"
 				rel="nofollow noopener"
 			>
 				Privacy policy
