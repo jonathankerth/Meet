@@ -1,26 +1,25 @@
-/**
- *
- * @param {*} events:
- * The following function should be in the “api.js” file.
- * This function takes an events array, then uses map to create a new array with only locations.
- * It will also remove all duplicates by creating another new array using the spread operator and spreading a Set.
- * The Set will remove all duplicates from the array.
- */
-
 import { mockData } from "./mock-Data";
-import axios from "axios";
 import NProgress from "nprogress";
+
+import axios from "axios";
+
+export const extractLocations = (events) => {
+	var extractLocations = events.map((event) => event.location);
+	var locations = [...new Set(extractLocations)];
+	return locations;
+};
 
 export const getAccessToken = async () => {
 	const accessToken = localStorage.getItem("access_token");
 	const tokenCheck = accessToken && (await checkToken(accessToken));
+
 	if (!accessToken || tokenCheck.error) {
 		await localStorage.removeItem("access_token");
 		const searchParams = new URLSearchParams(window.location.search);
 		const code = await searchParams.get("code");
 		if (!code) {
 			const results = await axios.get(
-				"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-auth-url"
+				"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-auth-url/"
 			);
 			const { authUrl } = results.data;
 			return (window.location.href = authUrl);
@@ -40,46 +39,6 @@ export const checkToken = async (accessToken) => {
 	return result;
 };
 
-export const getEvents = async () => {
-	NProgress.start();
-
-	if (window.location.href.startsWith("http://localhost")) {
-		NProgress.done();
-		return mockData;
-	}
-	//Access local storage when user offline
-	if (!navigator.onLine) {
-		const data = localStorage.getItem("lastEvents");
-		NProgress.done();
-		console.log("offline data: ", data);
-		return data ? JSON.parse(data).events : [];
-	}
-
-	if (!navigator.onLine) {
-		const data = localStorage.getItem("lastEvents");
-		NProgress.done();
-		return data ? JSON.parse(data).events : [];
-	}
-
-	const token = await getAccessToken();
-
-	if (token) {
-		removeQuery();
-		const url =
-			`https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-events` +
-			"/" +
-			token;
-		const result = await axios.get(url);
-		if (result.data) {
-			var locations = extractLocations(result.data.events);
-			localStorage.setItem("lastEvents", JSON.stringify(result.data));
-			localStorage.setItem("locations", JSON.stringify(locations));
-		}
-		NProgress.done();
-		return result.data.events;
-	}
-};
-
 const removeQuery = () => {
 	if (window.history.pushState && window.location.pathname) {
 		var newurl =
@@ -97,6 +56,7 @@ const removeQuery = () => {
 const getToken = async (code) => {
 	try {
 		const encodeCode = encodeURIComponent(code);
+		// eslint-disable-next-line
 		const response = await fetch(
 			"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/token/" +
 				"/" +
@@ -113,8 +73,36 @@ const getToken = async (code) => {
 	}
 };
 
-export const extractLocations = (events) => {
-	var extractLocations = events.map((event) => event.location);
-	var locations = [...new Set(extractLocations)];
-	return locations;
+export const getEvents = async (numberOfResults) => {
+	NProgress.start();
+
+	if (window.location.href.startsWith("http://localhost")) {
+		NProgress.done();
+		return mockData;
+	}
+
+	if (!navigator.onLine) {
+		const data = localStorage.getItem("lastEvents");
+		NProgress.done();
+		return data ? JSON.parse(data).events : [];
+	}
+
+	const token = await getAccessToken();
+
+	if (token) {
+		removeQuery();
+		const url =
+			"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-events" +
+			"/" +
+			token;
+		const result = await axios.get(url);
+		console.log("API response:", result); // Add this line to log the response
+		if (result.data) {
+			var locations = extractLocations(result.data.events);
+			localStorage.setItem("lastEvents", JSON.stringify(result.data));
+			localStorage.setItem("locations", JSON.stringify(locations));
+		}
+		NProgress.done();
+		return result.data.events;
+	}
 };
