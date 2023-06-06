@@ -93,6 +93,7 @@ export const getEvents = async (numberOfResults) => {
 		removeQuery();
 		const url =
 			"https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-events/" +
+			"/" +
 			token;
 		const result = await axios.get(url);
 		console.log("API response:", result); // Add this line to log the response
