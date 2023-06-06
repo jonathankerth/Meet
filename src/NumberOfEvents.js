@@ -5,7 +5,7 @@ class NumberOfEvents extends Component {
 	constructor() {
 		super();
 		this.state = {
-			numberofevents: 32,
+			numberOfEvents: 32,
 			errorText: "",
 		};
 	}
@@ -14,20 +14,20 @@ class NumberOfEvents extends Component {
 		const value = event.target.value;
 		if (value >= 1 && value <= 32) {
 			this.setState({
-				numberofevents: value,
+				numberOfEvents: value,
 				errorText: "",
 			});
 		} else {
 			this.setState({
-				numberofevents: value,
+				numberOfEvents: value,
 				errorText: "Please enter a valid number between 1 and 32",
 			});
 		}
 	};
 
 	componentDidUpdate(prevProps, prevState) {
-		if (prevState.numberofevents !== this.state.numberofevents) {
-			this.props.updateEvents(this.state.numberofevents);
+		if (prevState.numberOfEvents !== this.state.numberOfEvents) {
+			this.props.updateEvents(this.state.numberOfEvents);
 		}
 	}
 
@@ -40,7 +40,7 @@ class NumberOfEvents extends Component {
 					className="numberOfEvents"
 					min={1}
 					max={32}
-					value={this.state.numberofevents}
+					value={this.state.numberOfEvents}
 					onChange={this.handleInputChanged}
 				/>
 			</div>
