@@ -2,26 +2,31 @@ import React, { Component } from "react";
 import { ErrorAlert } from "./Alert";
 
 class NumberOfEvents extends Component {
-	constructor() {
-		super();
-		this.state = {
-			query: 32,
-			errorText: "",
-		};
-	}
+	state = {
+		query: 32,
+		errorText: "",
+	};
 
-	handleInputChanged = (event) => {
-		const value = event.target.value;
-		if (value >= 1 && value <= 32) {
+	handleChange = async (event) => {
+		let value = event.target.value;
+		if (value <= 32 && value > 0) {
 			this.setState({
 				query: value,
 				errorText: "",
 			});
-			this.props.updateEvents(undefined, value);
+			this.props.updateEvents(null, value);
 		} else {
 			this.setState({
 				query: value,
-				errorText: "Please enter a valid number between 1 and 32",
+				errorText: "Select number from 1 to 32.",
+			});
+		}
+	};
+
+	handleBlur = () => {
+		if (this.state.errorText) {
+			this.setState({
+				errorText: "",
 			});
 		}
 	};
@@ -29,15 +34,18 @@ class NumberOfEvents extends Component {
 	render() {
 		return (
 			<div className="numberOfEvents">
-				<ErrorAlert text={this.state.errorText} />
+				<label htmlFor="eventCount">Select number of events</label>
 				<input
 					type="number"
-					className="numberOfEvents"
-					min={1}
-					max={32}
+					id="eventCount"
+					className="nrOfEvents"
 					value={this.state.query}
-					onChange={this.handleInputChanged}
+					onChange={this.handleChange}
+					onBlur={this.handleBlur}
 				/>
+				<div>
+					<ErrorAlert text={this.state.errorText} bold={true} />
+				</div>
 			</div>
 		);
 	}
