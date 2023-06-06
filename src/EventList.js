@@ -3,8 +3,8 @@ import Event from "./Event";
 
 class EventList extends Component {
 	render() {
-		const { events, numberOfEvents } = this.props;
-		const filteredEvents = events.slice(0, numberOfEvents);
+		const { events, numberofevents } = this.props;
+		const filteredEvents = events.slice(0, numberofevents);
 
 		return (
 			<ul className="EventList">
