@@ -65,19 +65,15 @@ class App extends Component {
 						getAccessToken();
 					}}
 				/>
-				{!this.state.showWelcomeScreen && (
-					<>
-						<CitySearch
-							locations={this.state.locations}
-							updateEvents={this.updateEvents}
-						/>
-						<NumberOfEvents
-							numberOfEvents={this.state.numberOfEvents}
-							updateEvents={this.updateEvents}
-						/>
-						<EventList events={this.state.events} />
-					</>
-				)}
+				<CitySearch
+					locations={this.state.locations}
+					updateEvents={this.updateEvents}
+				/>
+				<NumberOfEvents
+					numberOfEvents={this.state.numberOfEvents}
+					updateEvents={this.updateEvents}
+				/>
+				<EventList events={this.state.events} />
 			</div>
 		);
 	}
