@@ -19,7 +19,7 @@ class CitySearch extends Component {
 			this.setState({
 				query: value,
 				infoText:
-					"We can not find the city you are looking for. Please try another city",
+					"We can not find the city you are looking for. Please try another city. If offline, this may not be true due to caching.",
 			});
 		} else {
 			return this.setState({
