@@ -78,6 +78,7 @@ class App extends Component {
 			return <div className="App" />;
 		return (
 			<div className="App">
+				<h1>Find Events Near You</h1>
 				<WelcomeScreen
 					showWelcomeScreen={this.state.showWelcomeScreen}
 					getAccessToken={() => {
@@ -91,7 +92,7 @@ class App extends Component {
 							updateEvents={this.updateEvents}
 						/>
 						<NumberOfEvents updateEvents={this.updateEvents} />
-						<h4>Events in each city</h4>
+
 						<div className="data-vis-wrapper">
 							<EventGenre events={this.state.events} />
 							<ResponsiveContainer height={400}>
@@ -116,6 +117,7 @@ class App extends Component {
 								</ScatterChart>
 							</ResponsiveContainer>
 						</div>
+						<h4>Events in each city</h4>
 						<EventList events={this.state.events} />
 					</>
 				)}
