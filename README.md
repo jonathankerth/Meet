@@ -5,21 +5,23 @@ Welcome to the Meet App!
 ## Hosted Here
 The app is hosted on GitHub Pages. You can access it [here](https://jonathankerth.github.io/meet/).
 
-### Prerequisites
+## Prerequisites
 - Node.js and npm (Node Package Manager) must be installed on your machine.
 
+## Tecnical Requirements
+Javascript, React, Node.js, AWS
 
-Objective
+## Objective
 The objective of this project is to build a serverless, progressive web application (PWA) with React using a test-driven development (TDD) technique. The application uses the Google Calendar API to fetch upcoming events.
 
-Context
+## Context
 The Meet App combines the benefits of serverless architecture and PWAs, which includes:
 
-Serverless: No backend maintenance, easy to scale, always available, no cost for idle time.
+## Serverless: No backend maintenance, easy to scale, always available, no cost for idle time.
 PWAs: Instant loading, offline support, push notifications, "add to home screen" prompt, responsive design, and cross-platform compatibility.
 The app is built using TDD to ensure high-quality code, and data visualization is used to make the app more visually appealing and informative.
 
-Key Features
+## Key Features
 Filter events by city.
 Show/hide event details.
 Specify the number of events.
@@ -33,9 +35,6 @@ As a user, I would like to be able to specify the number of events I want to vie
 As a user, I would like to be able to use the app when offline so that I can see the events I viewed the last time I was online.
 As a user, I would like to be able to add the app shortcut to my home screen so that I can open the app faster.
 As a user, I would like to be able to see a chart showing the upcoming events in each city so that I know what events are organized in which city.
-
-Tecnical Requirements
-Javascript, React, Node.js, AWS
 
 # Serverless Functions in My Meet App
 
