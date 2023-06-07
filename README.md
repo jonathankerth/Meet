@@ -1,5 +1,14 @@
 # Meet App
 
+Welcome to the Meet App!
+
+## Hosted Here
+The app is hosted on GitHub Pages. You can access it [here](https://jonathankerth.github.io/meet/).
+
+### Prerequisites
+- Node.js and npm (Node Package Manager) must be installed on your machine.
+
+
 Objective
 The objective of this project is to build a serverless, progressive web application (PWA) with React using a test-driven development (TDD) technique. The application uses the Google Calendar API to fetch upcoming events.
 
