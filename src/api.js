@@ -3,8 +3,8 @@ import NProgress from 'nprogress'
 import axios from 'axios'
 
 export const extractLocations = (events) => {
-  var extractLocations = events.map((event) => event.location)
-  var locations = [...new Set(extractLocations)]
+  let extractLocations = events.map((event) => event.location)
+  let locations = [...new Set(extractLocations)]
   return locations
 }
 
@@ -41,7 +41,7 @@ export const getEvents = async (numberOfResults) => {
       token
     const result = await axios.get(url)
     if (result.data) {
-      var locations = extractLocations(result.data.events)
+      let locations = extractLocations(result.data.events)
       localStorage.setItem('lastEvents', JSON.stringify(result.data))
       localStorage.setItem('locations', JSON.stringify(locations))
     }
@@ -70,7 +70,7 @@ export const getAccessToken = async () => {
 }
 const removeQuery = () => {
   if (window.history.pushState && window.location.pathname) {
-    var newurl =
+    let newurl =
       window.location.protocol +
       '//' +
       window.location.host +
