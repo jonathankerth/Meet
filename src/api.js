@@ -36,6 +36,7 @@ export const getEvents = async (numberOfResults) => {
 
   if (token) {
     removeQuery()
+
     const url =
       `https://zb7siwyfe7.execute-api.us-east-2.amazonaws.com/dev/api/get-events/` +
       token
@@ -69,8 +70,9 @@ export const getAccessToken = async () => {
   return accessToken
 }
 const removeQuery = () => {
+  let newurl
   if (window.history.pushState && window.location.pathname) {
-    let newurl =
+    newurl =
       window.location.protocol +
       '//' +
       window.location.host +
