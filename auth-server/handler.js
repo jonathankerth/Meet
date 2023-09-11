@@ -15,7 +15,7 @@ const credentials = {
     'https://meet-ten-beryl.vercel.app/meet/',
     'https://meet-ten-beryl.vercel.app/meet',
   ],
-  javascript_origins: ['https://meet-ten-beryl.vercel.app'],
+  javascript_origins: ['https://meet-ten-beryl.vercel.app/'],
 }
 
 const { client_secret, client_id, redirect_uris, calendar_id } = credentials
